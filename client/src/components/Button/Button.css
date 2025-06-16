@@ -1,0 +1,118 @@
+.button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.button.primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.button.primary:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.button.secondary {
+    background-color: transparent;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+.button.secondary:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+    transform: translateY(-2px);
+}
+
+.google-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 24px;
+    background-color: white;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3c4043;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.google-button:hover {
+    background-color: #f5f5f5;
+}
+
+.google-button:active {
+    background-color: #eeeeee;
+}
+
+.google-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.mui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+    outline: none;
+    text-decoration: none;
+    min-width: 64px;
+    min-height: 36px;
+  }
+  .mui-btn.raised.primary {
+    background: #111;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .mui-btn.raised.secondary {
+    background: #e0e0e0;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.10);
+  }
+  .mui-btn.raised.primary:hover {
+    background: #000;
+  }
+  .mui-btn.raised.secondary:hover {
+    background: #bdbdbd;
+  }
+  .mui-btn.outlined.primary {
+    background: transparent;
+    color: #4296ea;
+    border: 2px solid #4296ea;
+  }
+  .mui-btn.outlined.secondary {
+    background: transparent;
+    color: #333;
+    border: 2px solid #e0e0e0;
+  }
+  .mui-btn.outlined.primary:hover {
+    background: rgba(66,150,234,0.08);
+  }
+  .mui-btn.outlined.secondary:hover {
+    background: #f5f5f5;
+  }
+  .mui-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }

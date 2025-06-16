@@ -1,0 +1,166 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+header.scrolled {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 0 0 16px 16px;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #000000;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #000000;
+    transition: width 0.2s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    color: #000000;
+    position: relative;
+}
+
+.nav-button:hover {
+    color: #000000;
+}
+
+.nav-button::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #000000;
+    transition: width 0.2s ease;
+}
+
+.nav-button:hover::after {
+    width: 100%;
+}
+
+.menu-button {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.menu-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #000000;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: #000000;
+    transition: all 0.3s;
+}
+
+.menu-icon::before {
+    top: -6px;
+}
+
+.menu-icon::after {
+    bottom: -6px;
+}
+
+@media (max-width: 768px) {
+    .menu-button {
+        display: block;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .nav-link,
+    .nav-button {
+        padding: 0.75rem;
+        text-align: center;
+    }
+}

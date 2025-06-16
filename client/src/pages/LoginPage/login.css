@@ -1,0 +1,93 @@
+.login-background {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f6fa;
+}
+
+.login-card {
+    background: #fff;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    min-width: 350px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.form-error {
+    color: #ff0000;
+    background: #ffeaea;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.login-input {
+    width: 100%;
+}
+
+form > :global(.mui-btn) {
+    margin-top: 1.2rem;
+}
+
+.login-btn {
+    margin-top: 1.2rem;
+    width: 100%;
+    font-size: 1.1rem;
+}
+
+.form-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+}
+.form-link a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+}
+.form-link a:hover {
+    text-decoration: underline;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.separator span {
+    padding: 0 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+:global(.google-button) {
+    margin-bottom: 1rem;
+}
