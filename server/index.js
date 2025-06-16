@@ -1,8 +1,12 @@
 import express from 'express';
 import js2xmlparser from 'js2xmlparser';
+import cors from 'cors';  // Add this import
 
 const app = express();
 const port = 3001;
+
+// Enable CORS
+app.use(cors());
 
 // Exemple de données statiques
 const vol = {
