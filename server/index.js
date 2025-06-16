@@ -1,7 +1,11 @@
 import express from 'express';
 import js2xmlparser from 'js2xmlparser';
+import cors from 'cors';
 
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
 const port = 3001;
 
 // Exemple de données statiques
