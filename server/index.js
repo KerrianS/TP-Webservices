@@ -1,124 +1,55 @@
 import express from 'express';
-import session from 'express-session';
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import js2xmlparser from 'js2xmlparser';
 import cors from 'cors';
+import session from 'express-session';
+import initGoogleAuth from './services/google.auth.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
 
-app.use(session({
-  secret: 'your_session_secret',
-  resave: false,
-  saveUninitialized: false
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
 
-// Configuration de la stratégie Google
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3001/auth/google/callback"
-  },
-  (accessToken, refreshToken, profile, done) => {
-    const user = {
-      id: profile.id,
-      firstName: profile.name.givenName,
-      lastName: profile.name.familyName,
-      email: profile.emails[0].value,
-      picture: profile.photos[0].value
-    };
-    return done(null, user);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
-));
+}));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+const authenticateGoogle = initGoogleAuth(app);
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { 
-    failureRedirect: 'http://localhost:3000/login',
-    successRedirect: 'http://localhost:3000'
-  })
-);
-
+// Ajouter cette route pour récupérer les infos utilisateur
 app.get('/api/user', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json(req.user);
+  if (req.user) {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email
+    });
   } else {
-    res.status(401).json({ error: 'Not authenticated' });
+    res.status(401).json({ message: 'Non authentifié' });
   }
 });
 
+// Ajouter une route de déconnexion
 app.get('/api/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).json({ error: 'Error during logout' });
-    }
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error destroying session' });
-      }
-      res.clearCookie('connect.sid');
-      res.json({ success: true });
-    });
+  req.logout(() => {
+    res.status(200).json({ message: 'Déconnecté avec succès' });
   });
 });
 
+app.use('/api', authenticateGoogle);
+
 const port = 3001;
-const vol = {
-    compagnie: 'Air France',
-    numero: 'AF1234',
-    place: '12A',
-    prix: 199.99,
-    date: '2025-07-01T10:00:00Z'
-};
-
-app.get('/compagnies/:compagnieId/vols/:volId', (req, res) => {
-    const accept = req.headers['accept'];
-    if (accept && accept.includes('application/xml')) {
-        res.set('Content-Type', 'application/xml');
-        res.send(js2xmlparser.parse('vol', vol));
-    } else {
-        res.json(vol);
-    }
-});
-
-app.get('/compagnies', (req, res) => {
-    res.json([{ id: 'AF', nom: 'Air France' }, { id: 'LH', nom: 'Lufthansa' }]);
-});
-
-app.get('/compagnies/:compagnieId/vols', (req, res) => {
-    res.json([vol]);
-});
-
-app.get('/compagnies/:compagnieId/vols/:volId/places', (req, res) => {
-    res.json([{ id: '12A', disponible: true }, { id: '12B', disponible: false }]);
-});
-
-app.get('/compagnies/:compagnieId/vols/:volId/date', (req, res) => {
-    res.json({ date: vol.date });
-});
 
 app.listen(port, () => {
-    console.log(`API REST statique sur http://localhost:${port}`);
+    console.log(`API REST running on http://localhost:${port}`);
 });

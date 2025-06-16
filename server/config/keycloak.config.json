@@ -1,0 +1,8 @@
+{
+    "realm": "tp-webservices",
+    "auth-server-url": "http://localhost:8080",
+    "ssl-required": "external",
+    "resource": "rest-api",
+    "bearer-only": true,
+    "confidential-port": 0
+}

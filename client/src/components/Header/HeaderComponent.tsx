@@ -33,7 +33,7 @@ const HeaderComponent: React.FC = () => {
             {isAuthenticated && user ? (
               <>
                 <div className="user-info">
-                  <strong>Bienvenue {user.firstName} {user.lastName}</strong>
+                  <strong>Bienvenue {user.name}</strong>
                 </div>
                 <ButtonComponent className="nav-button" onClick={logout}>
                   Déconnexion
