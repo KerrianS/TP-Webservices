@@ -46,7 +46,7 @@ const initGoogleAuth = (app) => {
         '/auth/google/callback',
         passport.authenticate('google', {
             failureRedirect: '/login',
-            session: true  // Changer à true pour maintenir la session
+            session: true 
         }),
         (req, res) => {
             res.redirect('http://localhost:3000');

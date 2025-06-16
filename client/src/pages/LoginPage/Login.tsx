@@ -7,6 +7,7 @@ import GoogleButtonComponent from '../../components/Button/GoogleButtonComponent
 import TextFieldComponent from '../../components/TextField/TextFieldComponent.tsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import keycloak from '../../services/keycloak';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -37,6 +38,10 @@ const Login: React.FC = () => {
     window.location.href = 'http://localhost:3001/auth/google';
   };
 
+  const handleKeycloakLogin = () => {
+    // keycloak.login();
+  };
+
   return (
     <>
       <div className="login-background">
@@ -52,37 +57,14 @@ const Login: React.FC = () => {
             <span>ou</span>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <TextFieldComponent
-              variant="outlined"
-              value={email}
-              onChange={(value) => setEmail(value)}
-              label="Email"
-              type="email"
-              required={true}
-              className="login-input"
-            />
-            <TextFieldComponent
-              variant="outlined"
-              value={password}
-              onChange={(value) => setPassword(value)}
-              label="Mot de passe"
-              type="password"
-              required={true}
-              className="login-input"
-            />
-            <ButtonComponent
-              color="primary"
-              variant="raised"
-              onClick={handleSubmit}
-              type="submit"
-            >
-              Se connecter
-            </ButtonComponent>
-          </form>
-          <p className="form-link">
-            Pas encore de compte ? Connecte toi avec Google !!!
-          </p>
+          <ButtonComponent
+            color="primary"
+            variant="raised"
+            onClick={handleKeycloakLogin}
+            className="login-btn"
+          >
+            Se connecter avec Keycloak
+          </ButtonComponent>
         </div>
       </div>
       <ToastContainer />
