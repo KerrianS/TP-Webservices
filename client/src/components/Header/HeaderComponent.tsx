@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext.tsx';
 import './Header.css';
+import ButtonComponent from '../Button/ButtonComponent.tsx';
 
-interface HeaderProps {
-  isAuthenticated?: boolean;
-}
-
-const HeaderComponent: React.FC<HeaderProps> = ({ isAuthenticated = false }) => {
+const HeaderComponent: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,40 +21,28 @@ const HeaderComponent: React.FC<HeaderProps> = ({ isAuthenticated = false }) => 
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogout = () => {
-    console.log('Déconnexion...');
-  };
-
   return (
-    <header className={isScrolled ? 'scrolled' : ''}>
-      <nav>
-        <div className="logo">
-          <a href="/">OpomlyTravel</a>
-        </div>
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+      <nav className="nav">
+        <a href="/" className="nav-brand">OpomlyTravel</a>
 
-        {/* Menu mobile */}
-        <button 
-          className="menu-button" 
-          onClick={toggleMenu} 
-          aria-label="Menu"
-        >
-          <span className="menu-icon"></span>
-        </button>
-
-        {/* Navigation desktop */}
-        <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+        <div className={`nav-items ${isMenuOpen ? 'active' : ''}`}>
           <a href="/" className="nav-link">Accueil</a>
-          <a href="/models3D" className="nav-link">Nos voyages</a>
-          {isAuthenticated ? (
-            <>
-              <a href="/profile" className="nav-link">Profil</a>
-              <button className="nav-button" onClick={handleLogout}>
-                Déconnexion
-              </button>
-            </>
-          ) : (
-            <a href="/login" className="nav-link">Connexion</a>
-          )}
+          <a href="/voyages" className="nav-link">Nos voyages</a>
+          <div className="nav-items">
+            {isAuthenticated && user ? (
+              <>
+                <div className="user-info">
+                  <strong>Bienvenue {user.firstName} {user.lastName}</strong>
+                </div>
+                <ButtonComponent className="nav-button" onClick={logout}>
+                  Déconnexion
+                </ButtonComponent>
+              </>
+            ) : (
+              <a href="/login" className="nav-link">Connexion</a>
+            )}
+          </div>
         </div>
       </nav>
     </header>

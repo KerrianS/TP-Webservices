@@ -18,7 +18,7 @@ interface GoogleButtonProps {
 }
 
 const GoogleButtonComponent: React.FC<GoogleButtonProps> = ({
-  onClick,
+  onClick = () => window.location.href = 'http://localhost:3001/auth/google',
   disabled = false,
   children = "Continue with Google"
 }) => {
@@ -27,6 +27,7 @@ const GoogleButtonComponent: React.FC<GoogleButtonProps> = ({
       className="google-button" 
       onClick={onClick}
       disabled={disabled}
+      type="button"
     >
       <GoogleLogo />
       <span>{children}</span>
