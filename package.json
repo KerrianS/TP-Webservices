@@ -8,6 +8,7 @@
         "server": "cd server && npm start"
     },
     "dependencies": {
-        "concurrently": "^7.6.0"
+        "concurrently": "^7.6.0",
+        "jsonwebtoken": "^9.0.2"
     }
 }
