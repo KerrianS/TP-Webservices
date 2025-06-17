@@ -96,29 +96,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkUser();
   }, []);
 
-  // Vérifier l'utilisateur quand la page devient visible (après redirection)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && !isLoading && !user) {
-        checkUser();
-      }
-    };
-
-    const handleFocus = () => {
-      if (!isLoading && !user) {
-        checkUser();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [isLoading, user]);
-
   const loginWithKeycloak = () => {
     // Redirection vers le backend qui gère Keycloak
     window.location.href = 'http://localhost:3001/api/keycloak/auth';
