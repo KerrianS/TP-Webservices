@@ -31,7 +31,7 @@ const HeaderComponent: React.FC = () => {
           {isAuthenticated && user ? (
             <>
               <Link to="/" className="nav-link">Accueil</Link>
-              <Link to="/voyages" className="nav-link">Nos voyages</Link>
+              <Link to="/myTrip" className="nav-link">Mes voyages</Link>
               <div className="user-info">
                 <strong>Bienvenue {user.name}</strong>
               </div>

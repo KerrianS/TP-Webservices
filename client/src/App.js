@@ -5,6 +5,7 @@ import Header from './components/Header/HeaderComponent.tsx';
 import Footer from './components/Footer/FooterComponent.tsx';
 import Home from './pages/HomePage/Home.tsx';
 import Login from './pages/LoginPage/Login.tsx';
+import Trip from './pages/TripPage/Trip.tsx';
 import './App.css';
 
 function AppContent() {
@@ -18,6 +19,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/myTrip" element={<Trip />} />
             <Route path="/services" element={<div>Services Page</div>} />
             <Route path="/about" element={<div>À propos</div>} />
             <Route path="/contact" element={<div>Contact</div>} />

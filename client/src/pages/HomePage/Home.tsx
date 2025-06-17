@@ -1,5 +1,7 @@
 import React from 'react';
 import './home.css';
+import { useAuth } from '../../contexts/AuthContext.tsx';
+import { Link } from 'react-router-dom';
 
 const dreamDestinations = [
   {
@@ -45,13 +47,16 @@ const dreamDestinations = [
 ];
 
 const Home: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <div className="home-container">
       <div className="hero-section dream-bg">
         <div className="hero-overlay" />
         <h1 className="hero-title">Voyagez vers vos rêves</h1>
         <p className="hero-subtitle">Des paysages à couper le souffle, des souvenirs inoubliables.<br/>Explorez le monde avec OpomlyTravel.</p>
-        <button className="cta-button hero-btn">Planifiez votre aventure</button>
+        <Link to={isAuthenticated ? '/mytrip' : '/login'} className="cta-button hero-btn">
+          Planifiez votre aventure
+        </Link>
       </div>
 
       <div className="dream-destinations-section">

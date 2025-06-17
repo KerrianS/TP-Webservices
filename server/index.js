@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 
 import googleRoutes from './routes/google.routes.js';
 import keycloakRoutes from './routes/keycloak.routes.js';
+import tripsRoutes from './routes/trips.routes.js';
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,7 @@ initGoogleAuth(app);
 
 app.use('/api/google', googleRoutes);
 app.use('/api/keycloak', keycloak.middleware(), keycloakRoutes);
+app.use('/api/trips', tripsRoutes);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
