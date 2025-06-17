@@ -54,6 +54,12 @@ form > :global(.mui-btn) {
     font-size: 1.1rem;
 }
 
+.login-btn img {
+    width: 15px;
+    height: auto;
+    margin-right: 8px;
+}
+
 .form-link {
     margin-top: 1.5rem;
     text-align: center;
@@ -90,4 +96,13 @@ form > :global(.mui-btn) {
 
 :global(.google-button) {
     margin-bottom: 1rem;
+}
+
+.login-logo {
+    width: 250px; 
+    height: auto;
+    margin-bottom: 2rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

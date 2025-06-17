@@ -1,10 +1,12 @@
 import React from 'react';
 import './home.css';
+import opomlyLogo from '../../assets/opomlyTravel.png';
 
 const Home: React.FC = () => {
   return (
     <div className="home-container">
       <div className="hero-section">
+        <img src={opomlyLogo} alt="OpomlyTravel Logo" className="home-logo" />
         <h1>Discover Your Next Adventure</h1>
         <p>Explore the world with OpomlyTravel</p>
       </div>

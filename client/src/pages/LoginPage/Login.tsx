@@ -7,7 +7,8 @@ import GoogleButtonComponent from '../../components/Button/GoogleButtonComponent
 import TextFieldComponent from '../../components/TextField/TextFieldComponent.tsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import keycloak from '../../services/keycloak';
+import opomlyLogo from '../../assets/opomlyTravel.png';
+import keycloakLogo from '../../assets/keycloak.png';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -46,6 +47,7 @@ const Login: React.FC = () => {
     <>
       <div className="login-background">
         <div className="login-card">
+          <img src={opomlyLogo} alt="OpomlyTravel Logo" className="login-logo" />
           <h1 className="form-title">Connexion</h1>
           {error && <div className="form-error">{error}</div>}
           
@@ -63,6 +65,7 @@ const Login: React.FC = () => {
             onClick={handleKeycloakLogin}
             className="login-btn"
           >
+            <img src={keycloakLogo} alt="Keycloak Logo" style={{ width: '80px' }} />
             Se connecter avec Keycloak
           </ButtonComponent>
         </div>
