@@ -1,5 +1,17 @@
-version: '3'
+version: '3.5'
 services:
+  opomlytravel:
+    image: registry.infres.fr/OpomlyTravel
+    build: ./server
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    depends_on:
+      - keycloak
+    restart: unless-stopped
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     environment:
@@ -8,3 +20,4 @@ services:
     ports:
       - "8080:8080"
     command: start-dev
+    restart: unless-stopped
