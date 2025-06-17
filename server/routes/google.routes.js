@@ -3,6 +3,16 @@ import passport from 'passport';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/google/auth/google:
+ *   get:
+ *     summary: Démarre l'authentification Google (redirection)
+ *     tags: [Google]
+ *     responses:
+ *       302:
+ *         description: Redirige vers Google pour l'authentification
+ */
 router.get(
     '/auth/google',
     passport.authenticate('google', {
@@ -10,6 +20,16 @@ router.get(
     })
 );
 
+/**
+ * @swagger
+ * /api/google/auth/google/callback:
+ *   get:
+ *     summary: Callback Google après authentification
+ *     tags: [Google]
+ *     responses:
+ *       302:
+ *         description: Redirige vers l'accueil après authentification
+ */
 router.get(
     '/auth/google/callback',
     passport.authenticate('google', {
@@ -29,7 +49,29 @@ router.get(
     }
 );
 
-// Route pour récupérer les infos utilisateur Google
+/**
+ * @swagger
+ * /api/google/user/infos:
+ *   get:
+ *     summary: Récupère les infos utilisateur Google (si authentifié)
+ *     tags: [Google]
+ *     responses:
+ *       200:
+ *         description: Infos utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       401:
+ *         description: Non authentifié via Google
+ */
 router.get('/user/infos', passport.authenticate('session', { session: true }), (req, res) => {
     if (req.isAuthenticated() && req.user) {
         res.json({
@@ -42,7 +84,16 @@ router.get('/user/infos', passport.authenticate('session', { session: true }), (
     }
 });
 
-// Route pour déconnexion Google
+/**
+ * @swagger
+ * /api/google/user/logout:
+ *   get:
+ *     summary: Déconnexion Google
+ *     tags: [Google]
+ *     responses:
+ *       200:
+ *         description: Déconnecté avec succès de Google
+ */
 router.get('/user/logout', (req, res) => {
     req.logout(() => {
         req.session.destroy((err) => {

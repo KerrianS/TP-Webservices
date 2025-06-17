@@ -6,6 +6,16 @@ import qs from 'qs';
 const router = express.Router();
 const keycloak = keycloakAuth.getKeycloakInstance();
 
+/**
+ * @swagger
+ * /api/keycloak/auth:
+ *   get:
+ *     summary: Démarre l'authentification Keycloak (redirection)
+ *     tags: [Keycloak]
+ *     responses:
+ *       302:
+ *         description: Redirige vers Keycloak pour l'authentification
+ */
 router.get('/auth', (req, res) => {
     if (!process.env.KEYCLOAK_AUTH_SERVER_URL || !process.env.KEYCLOAK_REALM || !process.env.KEYCLOAK_CLIENT_ID) {
         return res.status(500).json({ 
@@ -32,6 +42,16 @@ router.get('/auth', (req, res) => {
     res.redirect(finalUrl);
 });
 
+/**
+ * @swagger
+ * /api/keycloak/callback:
+ *   get:
+ *     summary: Callback Keycloak après authentification
+ *     tags: [Keycloak]
+ *     responses:
+ *       302:
+ *         description: Redirige vers l'accueil après authentification
+ */
 router.get('/callback', async (req, res) => {
     const { code } = req.query;
     
@@ -78,7 +98,29 @@ router.get('/callback', async (req, res) => {
     }
 });
 
-// Route pour récupérer les infos utilisateur Keycloak
+/**
+ * @swagger
+ * /api/keycloak/user/infos:
+ *   get:
+ *     summary: Récupère les infos utilisateur Keycloak (si authentifié)
+ *     tags: [Keycloak]
+ *     responses:
+ *       200:
+ *         description: Infos utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       401:
+ *         description: Non authentifié
+ */
 router.get('/user/infos', (req, res) => {
     if (req.session && req.session.user) {
         res.json(req.session.user);
@@ -87,7 +129,16 @@ router.get('/user/infos', (req, res) => {
     }
 });
 
-// Route pour déconnexion Keycloak
+/**
+ * @swagger
+ * /api/keycloak/user/logout:
+ *   get:
+ *     summary: Déconnexion Keycloak
+ *     tags: [Keycloak]
+ *     responses:
+ *       200:
+ *         description: Déconnecté avec succès de Keycloak
+ */
 router.get('/user/logout', (req, res) => {
     if (req.session.user && req.session.user.id_token) {
         const keycloakLogoutUrl = `${process.env.KEYCLOAK_AUTH_SERVER_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/logout`;
@@ -112,6 +163,18 @@ router.get('/user/logout', (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/keycloak/protected:
+ *   get:
+ *     summary: Accès à une ressource protégée par Keycloak
+ *     tags: [Keycloak]
+ *     responses:
+ *       200:
+ *         description: Accès autorisé
+ *       401:
+ *         description: Accès non autorisé
+ */
 router.get('/protected', 
     keycloak.protect(),
     (req, res) => {
