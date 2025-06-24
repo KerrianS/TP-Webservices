@@ -1,13 +1,32 @@
 version: '3.5'
 services:
-  opomlytravel:
-    image: registry.infres.fr/OpomlyTravel
+  opomlytravel-client:
+    image: registry.infres.fr/opomlytravel-client
+    build: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - opomlytravel-server
+    restart: unless-stopped
+
+  opomlytravel-server:
+    image: registry.infres.fr/opomlytravel-server
     build: ./server
+    expose:
+      - "3001"
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
+      - SESSION_SECRET=your-secret-key-here
+      - CLIENT_URL=http://localhost:3000
+      - SERVER_URL=http://localhost:3001
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=opomlytravel
+      - KEYCLOAK_CLIENT_ID=opomlytravel-client
     depends_on:
       - keycloak
     restart: unless-stopped
@@ -21,3 +40,8 @@ services:
       - "8080:8080"
     command: start-dev
     restart: unless-stopped
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
+volumes:
+  keycloak_data:

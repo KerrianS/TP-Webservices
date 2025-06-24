@@ -25,6 +25,16 @@ const AuthContext = createContext<AuthContextType>({
   checkUser: async () => {},
 });
 
+// Configuration de l'URL du serveur
+const getServerUrl = () => {
+  // En production/Docker, utiliser l'URL relative (proxy nginx)
+  if (process.env.NODE_ENV === 'production') {
+    return '';
+  }
+  // En développement local
+  return 'http://localhost:3001';
+};
+
 // Ajout du hook useAuth
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -55,8 +65,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLastCheckTime(now);
       setIsLoading(true);
       
+      const serverUrl = getServerUrl();
+      
       // Essayer d'abord Google
-      let response = await fetch('http://localhost:3001/api/google/user/infos', {
+      let response = await fetch(`${serverUrl}/api/google/user/infos`, {
         credentials: 'include'
       });
       
@@ -68,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       // Si Google échoue, essayer Keycloak
-      response = await fetch('http://localhost:3001/api/keycloak/user/infos', {
+      response = await fetch(`${serverUrl}/api/keycloak/user/infos`, {
         credentials: 'include'
       });
       
@@ -98,7 +110,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithKeycloak = () => {
     // Redirection vers le backend qui gère Keycloak
-    window.location.href = 'http://localhost:3001/api/keycloak/auth';
+    const serverUrl = getServerUrl();
+    window.location.href = `${serverUrl}/api/keycloak/auth`;
   };
 
   const login = (userData: User) => {
@@ -107,13 +120,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
+      const serverUrl = getServerUrl();
       // Essayer de se déconnecter des deux services
       await Promise.allSettled([
-        fetch('http://localhost:3001/api/google/user/logout', {
+        fetch(`${serverUrl}/api/google/user/logout`, {
           method: 'GET',
           credentials: 'include'
         }),
-        fetch('http://localhost:3001/api/keycloak/user/logout', {
+        fetch(`${serverUrl}/api/keycloak/user/logout`, {
           method: 'GET',
           credentials: 'include'
         })

@@ -14,9 +14,10 @@ import tripsRoutes from './routes/trips.routes.js';
 dotenv.config();
 const app = express();
 
+// Configuration CORS pour accepter les requêtes depuis le client Docker et localhost
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
+  origin: ['http://localhost:3000'],
+  credentials: true
 }));
 
 app.use(express.json());
@@ -25,8 +26,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: false,
         httpOnly: true,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000
     }
 }));

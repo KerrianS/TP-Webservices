@@ -45,7 +45,8 @@ router.get(
             };
             console.log('Google user authenticated and stored in session:', req.session.user);
         }
-        res.redirect('http://localhost:3000');
+        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+        res.redirect(clientUrl);
     }
 );
 
