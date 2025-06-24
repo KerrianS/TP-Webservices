@@ -528,7 +528,7 @@
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "redirectUris" : [ "http://localhost:3001/api/keycloak/callback" ],
+    "redirectUris" : [ "http://localhost:3001/*" ],
     "webOrigins" : [ "http://localhost:3001/*" ],
     "notBefore" : 0,
     "bearerOnly" : false,

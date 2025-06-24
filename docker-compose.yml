@@ -24,7 +24,7 @@ services:
       - SESSION_SECRET=your-secret-key-here
       - CLIENT_URL=http://localhost:3000
       - SERVER_URL=http://localhost:3001
-      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080
+      - KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080
       - KEYCLOAK_REALM=opomlytravel
       - KEYCLOAK_CLIENT_ID=opomlytravel-client
     depends_on:
