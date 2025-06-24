@@ -28,12 +28,13 @@ router.get('/auth', (req, res) => {
         });
     }
     
-    const authUrl = `${process.env.KEYCLOAK_AUTH_SERVER_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/auth`;
+    const authUrl = `http://localhost:8080/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/auth`;
+    const serverUrl = process.env.SERVER_URL || 'http://localhost:3001';
     const params = new URLSearchParams({
         client_id: process.env.KEYCLOAK_CLIENT_ID,
         response_type: 'code',
         scope: 'openid email profile',
-        redirect_uri: 'http://localhost:3001/api/keycloak/callback',
+        redirect_uri: `${serverUrl}/api/keycloak/callback`,
     });
     
     const finalUrl = `${authUrl}?${params.toString()}`;
@@ -57,19 +58,21 @@ router.get('/callback', async (req, res) => {
     
     if (!code) {
         console.error('No authorization code received');
-        return res.redirect('http://localhost:3000/login?error=no_code');
+        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+        return res.redirect(`${clientUrl}/login?error=no_code`);
     }
 
     try {
         // Échanger le code contre un token
         const tokenEndpoint = `${process.env.KEYCLOAK_AUTH_SERVER_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/token`;
+        const serverUrl = process.env.SERVER_URL || 'http://localhost:3001';
         
         const tokenResponse = await axios.post(tokenEndpoint, qs.stringify({
             grant_type: 'authorization_code',
             client_id: process.env.KEYCLOAK_CLIENT_ID,
             client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
             code: code,
-            redirect_uri: 'http://localhost:3001/api/keycloak/callback'
+            redirect_uri: `${serverUrl}/api/keycloak/callback`
         }), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -91,10 +94,12 @@ router.get('/callback', async (req, res) => {
         
         console.log('Keycloak user authenticated:', req.session.user);
         
-        res.redirect('http://localhost:3000');
+        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+        res.redirect(clientUrl);
     } catch (error) {
         console.error('Error during Keycloak callback:', error);
-        res.redirect('http://localhost:3000/login?error=auth_failed');
+        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+        res.redirect(`${clientUrl}/login?error=auth_failed`);
     }
 });
 
@@ -142,9 +147,10 @@ router.get('/user/infos', (req, res) => {
 router.get('/user/logout', (req, res) => {
     if (req.session.user && req.session.user.id_token) {
         const keycloakLogoutUrl = `${process.env.KEYCLOAK_AUTH_SERVER_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/logout`;
+        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
         const params = new URLSearchParams({
             id_token_hint: req.session.user.id_token,
-            post_logout_redirect_uri: 'http://localhost:3000/login' // Rediriger vers la page de connexion de l'application
+            post_logout_redirect_uri: `${clientUrl}/login` // Rediriger vers la page de connexion de l'application
         });
         
         req.session.destroy((err) => {
