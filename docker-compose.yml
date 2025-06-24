@@ -38,10 +38,11 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8080:8080"
-    command: start-dev
+    command: start-dev --import-realm
     restart: unless-stopped
     volumes:
       - keycloak_data:/opt/keycloak/data
+      - ./keycloak-export:/opt/keycloak/data/import
 
 volumes:
   keycloak_data:

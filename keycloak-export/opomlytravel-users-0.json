@@ -1,0 +1,26 @@
+{
+  "realm" : "opomlytravel",
+  "users" : [ {
+    "id" : "2b373a15-f525-420e-a801-5d489f6ac500",
+    "username" : "test",
+    "firstName" : "test",
+    "lastName" : "test",
+    "email" : "test@gmail.com",
+    "emailVerified" : false,
+    "createdTimestamp" : 1750241478752,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "b44267f6-3bea-4be3-8622-2486d7bb8868",
+      "type" : "password",
+      "createdDate" : 1750241498205,
+      "secretData" : "{\"value\":\"K7zB+hzyZd4xfshjCZPr5dvt76nh6H4VZMrcaPxfX2g=\",\"salt\":\"cToKKEWWvhotzT8LgwR5sA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-opomlytravel" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}
