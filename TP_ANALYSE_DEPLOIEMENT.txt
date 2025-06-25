@@ -1,0 +1,158 @@
+# Rapport d'Analyse et de Déploiement - TP Webservices
+
+## 1. Mise en place de l’application REST
+
+**Solution mise en place :**
+Nous avons développé un backend Node.js (Express) dans le dossier `server/` qui expose des Web Services REST pour la gestion de vols. Les endpoints permettent de récupérer des ressources statiques représentant des vols (compagnie, numéro, place, prix, date). Les routes sont définies dans `server/routes/trips.routes.js`.
+
+**Difficultés rencontrées :**
+- Adapter la structure REST initialement prévue pour Java à Node.js/Express.
+- Structurer les ressources pour refléter la hiérarchie demandée.
+
+**Améliorations possibles :**
+- Ajouter une base de données pour rendre les ressources dynamiques.
+- Implémenter la pagination et la recherche avancée.
+
+---
+
+## 2. Mise en place de l’application JavaScript
+
+**Solution mise en place :**
+Le frontend est une Single Page Application React (`client/`). Elle consomme les Web Services REST du backend pour afficher la liste des vols et permettre la réservation. Les appels API sont réalisés via `fetch` dans les composants React.
+
+**Difficultés rencontrées :**
+- Gérer le CORS entre le frontend et le backend.
+- Synchroniser l’authentification entre le frontend et le backend.
+
+**Améliorations possibles :**
+- Ajouter une gestion d’état globale (Redux, Context API).
+- Améliorer l’UX/UI et la gestion des erreurs.
+
+---
+
+## 3. Délégation d’autorisation Oauth 2.1 (Google)
+
+**Solution mise en place :**
+Le backend intègre l’authentification Google via OAuth 2.1 (voir `server/services/google.auth.js`). Après inscription de l’application sur la console Google, le backend gère le flux d’autorisation et récupère les informations de profil utilisateur.
+
+**Difficultés rencontrées :**
+- Configuration des credentials Google et des redirections.
+- Gestion du flux OAuth côté serveur.
+
+**Améliorations possibles :**
+- Support d’autres fournisseurs OAuth.
+- Sécurisation accrue du stockage des tokens.
+
+---
+
+## 4. Protection du Web Service REST avec OpenID Connect (Keycloak)
+
+**Solution mise en place :**
+Keycloak est déployé via Docker (voir `docker-compose.yml`). Le backend REST est configuré comme client "bearer only" dans Keycloak et protégé via un middleware (`server/middleware/keycloak.middleware.js`).
+
+**Difficultés rencontrées :**
+- Configuration de Keycloak et adaptation du middleware.
+- Compréhension du flux OpenID Connect.
+
+**Améliorations possibles :**
+- Passage à une librairie OIDC standard (Keycloak adapter déprécié).
+- Gestion fine des rôles et permissions.
+
+---
+
+## 5. Authentification du frontend via Keycloak
+
+**Solution mise en place :**
+Le frontend React utilise le package `keycloak-js` pour déléguer l’authentification à Keycloak. La configuration du client "public" est récupérée depuis Keycloak et intégrée dans le frontend (`src/contexts/AuthContext.tsx`).
+
+**Difficultés rencontrées :**
+- Intégration de Keycloak dans React.
+- Synchronisation du token JWT avec le backend.
+
+**Améliorations possibles :**
+- Rafraîchissement automatique du token.
+- Meilleure gestion des erreurs d’authentification.
+
+---
+
+## 6. Analyse du token JWT
+
+**Solution mise en place :**
+Le token JWT est récupéré via les outils de développement du navigateur lors de l’authentification. Son contenu est analysé sur https://jwt.io/ pour vérifier les claims et permissions.
+
+**Difficultés rencontrées :**
+- Compréhension de la structure du JWT.
+
+**Améliorations possibles :**
+- Automatiser l’analyse du token côté frontend pour afficher les claims à l’utilisateur.
+
+---
+
+## 7. Définition du contrat d’API avec OpenAPI
+
+**Solution mise en place :**
+Le contrat OpenAPI est rédigé avec Swagger Editor. Il permet de générer la documentation HTML et des librairies clientes pour l’API REST.
+
+**Difficultés rencontrées :**
+- Prise en main de Swagger/OpenAPI.
+
+**Améliorations possibles :**
+- Génération automatique du contrat à partir du code source.
+
+---
+
+## 8. Management d’API avec Gravitee
+
+**Solution mise en place :**
+Gravitee est installé pour gérer l’API REST. L’import du contrat OpenAPI permet de configurer la gateway, appliquer des politiques d’accès (rate limiting) et tester l’API via la gateway.
+
+**Difficultés rencontrées :**
+- Configuration initiale de Gravitee.
+
+**Améliorations possibles :**
+- Automatiser le déploiement de la gateway.
+
+---
+
+## 9. Containerisation et orchestration
+
+**Solution mise en place :**
+Chaque composant (backend, frontend, Keycloak) dispose d’un Dockerfile. Le fichier `docker-compose.yml` orchestre le tout. Les images sont nommées selon le format `registry.infres.fr/MyService` pour un déploiement facile sur k3s.
+
+**Difficultés rencontrées :**
+- Configuration réseau entre les conteneurs.
+- Gestion des variables d’environnement sensibles.
+
+**Améliorations possibles :**
+- Utiliser des secrets Docker pour les credentials.
+- Ajouter des probes de santé.
+
+---
+
+# Note explicative : Déploiement et test
+
+1. **Prérequis :**
+   - Docker et Docker Compose installés
+   - Node.js et npm installés (pour développement local)
+
+2. **Déploiement local :**
+   - Cloner le dépôt
+   - Lancer `docker-compose up --build` à la racine du projet
+   - Accéder au frontend via `http://localhost:<port>`
+   - Accéder à Keycloak via `http://localhost:<keycloak-port>`
+
+3. **Tests :**
+   - Utiliser l’interface web pour s’authentifier et réserver un vol
+   - Vérifier les logs du backend pour les appels API
+   - Tester la protection des endpoints REST (403 sans token)
+   - Utiliser Swagger UI pour tester les endpoints
+   - Passer par la gateway Gravitee pour tester les politiques d’accès
+
+4. **Déploiement sur k3s :**
+   - Builder les images Docker et les pousser sur `registry.infres.fr`
+   - Déployer les services sur le cluster k3s via les manifests adaptés
+
+---
+
+**Remarque :**
+Ce document peut être enrichi avec des extraits de configuration, des captures d’écran ou des logs pour illustrer chaque étape.

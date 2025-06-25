@@ -33,15 +33,13 @@ TP-Webservices/
 
 - **Backend** :
   ```bash
-  cd server
-  node index.js
+  npm run server
   ```
   L'API tourne sur http://localhost:3001
 
 - **Frontend** :
   ```bash
-  cd client
-  npm run start
+  npm run client
   ```
   L'application React tourne sur http://localhost:3000
 
@@ -85,4 +83,4 @@ TP-Webservices/
 - Swagger permet de tester l'API facilement.
 
 ## Auteur
-- Projet pédagogique IMT - Webservices 2025 By SALAÜN Kerrian
+- Projet pédagogique IMT - Webservices 2025 By DIMECK Raphaël & SALAÜN Kerrian
