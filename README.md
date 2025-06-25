@@ -166,3 +166,7 @@ docker push registry.infres.fr/opomly/server
   127.0.0.1 opomly.infres.fr
   ```
 - Accéder à : http://opomly.infres.fr
+
+## Auteurs
+- **Raphaël Dimeck** - [GitHub](https://github.com/Raphael-dim)
+- **Kerrian Salaün** - [GitHub](https://github.com/KerrianS)
